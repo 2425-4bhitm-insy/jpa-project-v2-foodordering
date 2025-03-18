@@ -1,0 +1,140 @@
+= Online Food Ordering System
+:toc: left
+:toc-title: Inhaltsverzeichnis
+:sectnums:
+
+== Projektbeschreibung
+Dieses System ermöglicht Kunden, Essen online zu bestellen, während Restaurantbesitzer ihre Menüs verwalten und Lieferfahrer Bestellungen ausliefern können.
+Die Anwendung nutzt **JPA** zur Datenverwaltung und stellt eine **REST API** für CRUD-Operationen bereit.
+
+== Technologien
+- **Java** (Quarkus)
+- **JPA (Jakarta Persistence API)**
+- **Hibernate**
+- **PostgreSQL**
+
+== Klassendiagramm
+
+[plantuml]
+----
+@startuml
+class User {
+  + id : Long
+  + name : String
+  + email : String
+  + phoneNumber : String
+  + address : String
+}
+
+class Customer {
+  + orders : List<Order>
+}
+class RestaurantOwner {
+  + restaurants : List<Restaurant>
+}
+class DeliveryPerson {
+  + deliveries : List<Delivery>
+}
+
+User <|-- Customer
+User <|-- RestaurantOwner
+User <|-- DeliveryPerson
+
+class Restaurant {
+  + id : Long
+  + name : String
+  + description : String
+  + address : String
+  + rating : Float
+}
+
+class Menu {
+  + id : Long
+  + name : String
+}
+Restaurant "1" -- "1" Menu
+
+class Dish {
+  + id : Long
+  + name : String
+  + price : Float
+  + category : String
+  + available : Boolean
+}
+Menu "1" -- "N" Dish
+
+class Order {
+  + id : Long
+  + status : String
+  + totalPrice : Float
+  + orderDate : Date
+  + deliveryAddress : String
+}
+Customer "1" -- "N" Order
+Restaurant "1" -- "N" Order
+
+class OrderItem {
+  + quantity : Int
+  + price : Float
+}
+Order "1" -- "N" OrderItem
+Dish "1" -- "N" OrderItem
+
+class Payment {
+  + id : Long
+  + paymentMethod : String
+  + status : String
+  + amount : Float
+}
+Order "1" -- "1" Payment
+
+class Review {
+  + id : Long
+  + rating : Int
+  + comment : String
+}
+Customer "1" -- "N" Review
+Restaurant "1" -- "N" Review
+
+class Delivery {
+  + id : Long
+  + status : String
+  + estimatedTime : Date
+}
+Order "1" -- "1" Delivery
+DeliveryPerson "1" -- "N" Delivery
+@enduml
+----
+
+
+==  REST API Endpoints
+[cols="3,2,5", options="header"]
+|===
+| Methode | Endpoint | Beschreibung
+| `POST`  | `/orders` | Neue Bestellung erstellen
+| `GET`   | `/orders/{id}` | Bestellung abrufen
+| `PUT`   | `/orders/{id}` | Bestellung aktualisieren
+| `DELETE` | `/orders/{id}` | Bestellung löschen
+| `POST`  | `/restaurants` | Neues Restaurant anlegen
+| `GET`   | `/restaurants/{id}` | Restaurant abrufen
+| `POST`  | `/deliveries/{id}/status` | Lieferstatus aktualisieren
+|===
+
+
+== Unit & Integration Tests
+- **Unit Tests:**
+- Teste `OrderService`, ob eine Bestellung korrekt berechnet wird
+- Teste `ReviewService`, ob Bewertungen korrekt gespeichert werden
+- **Integration Tests:**
+- Prüfe, ob ein Restaurant erfolgreich Bestellungen empfangen kann
+- Überprüfe, ob Rabatte korrekt auf den Bestellwert angewendet werden
+
+--
+
+== Automatische Testdaten
+- Beim Start der Anwendung werden automatisch Restaurants, Gerichte und Benutzer generiert
+- Beispieldaten für Bestellungen und Zahlungen werden hinzugefügt
+
+==  Fazit
+Das **Online Food Ordering System** nutzt JPA für die Datenverwaltung und ermöglicht eine saubere, objektorientierte Modellierung. Es enthält eine klare Vererbungshierarchie, komplexe SQL-Abfragen und eine leistungsfähige REST API.
+
