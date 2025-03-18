@@ -15,7 +15,7 @@ Die Anwendung nutzt **JPA** zur Datenverwaltung und stellt eine **REST API** fü
 
 == Klassendiagramm
 
-image::docs/class-diagram.png[Online Food Ordering System Klassendiagramm]
+image::https://kroki.io/plantuml/svg/eNqNlMluwjAQhu9-iohrxaHXClW0RZWQ2NTlAUw8AkuxnToTUNTy7h07ibMQ2pxMZv385yfzDLnFXCUsTniWRZ8Z2OibRdFdJEX0EK2MPvgnzRXQ8ztaWUVAcZl0Q-nRaNjkak9DOgkuhAUaH4IXVi18yTM0Kiw1VoB1dSuZ4Wzrnh6puKx9A6LNLde4PevQYkM09DWFTfMCEnkCW-xovtFVryiDEkJrXeYamVdj9jOdBsxWqEfTynRXsSv6kQILyGIrU5SE-7eaXgaO9JNir4nh2Ai8Bp2PWHhhLb7J_SSie7jDtdejFjI7jmRPrYwhwLhIzBEOxha9q5zIRHyfuNpnYxLgmlA8cw2xmfjFNYT3xCAF4WPeUwUN8mR3BeNttiAiirqjbYbi6dqswaUtKA8ypFrItYmXCKqi_sqpWqJTYqlxQK4LKy_ZH-hmMP8SBjPVuh0vFNwwWVrm1oBHI7pKDanHlclp0i0uOqpljcdPEs6Dq4M_6zvHRnnOf2QuR97QuUr2_uKj3UEzpaLXLz6kClYYuGU9mPU-Im2L1iVz0IK-p7-TH6Da[https://kroki.io/plantuml/png/UDDFA2m034HtFZxEBm00[O]nline Food Ordering System Klassendiagramm]
 
 
 ==  REST API Endpoints
