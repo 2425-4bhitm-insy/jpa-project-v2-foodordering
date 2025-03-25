@@ -1,0 +1,12 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: myuser
+    password: mypassword
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/foodordering
+  hibernate-orm:
+    database:
+      generation: update
+    log:
+      sql: true

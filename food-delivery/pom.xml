@@ -68,6 +68,28 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
+
+
+            <!-- JDBC Treiber für PostgreSQL -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- Quarkus Hibernate ORM mit Panache -->
+        <!--<dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
+        </dependency> -->
+
+        <!-- Quarkus JDBC für PostgreSQL -->
+            <dependency>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-jdbc-postgresql</artifactId>
+            </dependency>
+
+
     </dependencies>
 
     <build>
