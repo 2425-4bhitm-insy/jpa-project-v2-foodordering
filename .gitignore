@@ -176,3 +176,4 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,git,intellij,java
 .idea/*
+/food-delivery/food-delivery.iml
