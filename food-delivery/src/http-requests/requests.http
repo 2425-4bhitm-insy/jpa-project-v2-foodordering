@@ -1,0 +1,8 @@
+### Test restaurants endpoint
+GET http://localhost:8080/restaurants
+
+### Test Orders endpoint
+GET http://localhost:8080/orders
+
+### Test Deliveries endpoint
+GET http://localhost:8080/deliveries
