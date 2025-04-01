@@ -18,6 +18,18 @@ public class Order {
     @ManyToOne
     private Customer customer;
 
+    @ManyToOne
+    private Restaurant restaurant;
+
+    @ManyToOne
+    private OrderItem orderItem;
+
+    @OneToOne
+    private Payment payment;
+
+    @OneToOne
+    private Delivery delivery;
+
     public Order() {
     }
 
@@ -67,5 +79,45 @@ public class Order {
 
     public void setDeliveryAdress(String deliveryAdress) {
         this.deliveryAdress = deliveryAdress;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public OrderItem getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
     }
 }

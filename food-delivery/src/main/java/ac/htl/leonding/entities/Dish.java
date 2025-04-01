@@ -1,7 +1,9 @@
 package ac.htl.leonding.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Dish {
@@ -11,6 +13,12 @@ public class Dish {
     private double price;
     private String category;
     private boolean isAvailable;
+
+    @ManyToOne
+    private Menu menu;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Dish(Long id, String name, double price, String category, boolean isAvailable) {
         this.id = id;
@@ -22,6 +30,22 @@ public class Dish {
 
     public Dish() {
 
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     public void setId(Long id) {

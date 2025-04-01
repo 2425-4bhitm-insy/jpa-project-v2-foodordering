@@ -3,6 +3,7 @@ package ac.htl.leonding.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import java.util.Date;
 
@@ -15,6 +16,9 @@ public class Delivery {
 
     @ManyToOne
     private DeliveryPerson deliveryPerson;
+
+    @OneToOne
+    private Order order;
 
     public Delivery() {
     }

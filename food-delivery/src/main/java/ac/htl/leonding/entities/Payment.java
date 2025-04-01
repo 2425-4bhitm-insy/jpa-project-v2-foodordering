@@ -2,6 +2,7 @@ package ac.htl.leonding.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Payment {
@@ -11,6 +12,9 @@ public class Payment {
     private String status;
     private double amount;
 
+    @OneToOne
+    private Order order;
+
     public Payment(Long id, String paymentMethod, String status, double amount) {
         this.id = id;
         this.paymentMethod = paymentMethod;
@@ -19,6 +23,14 @@ public class Payment {
     }
 
     public Payment() {
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public void setId(Long id) {
