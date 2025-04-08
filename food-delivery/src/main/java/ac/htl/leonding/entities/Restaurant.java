@@ -37,14 +37,6 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public RestaurantOwner getRestaurantOwner() {
-        return restaurantOwner;
-    }
-
-    public void setRestaurantOwner(RestaurantOwner restaurantOwner) {
-        this.restaurantOwner = restaurantOwner;
-    }
-
     public Menu getMenu() {
         return menu;
     }
