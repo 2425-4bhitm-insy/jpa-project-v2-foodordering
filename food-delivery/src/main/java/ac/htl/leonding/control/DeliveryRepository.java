@@ -24,7 +24,13 @@ public class DeliveryRepository {
         em.persist(delivery);
     }
 
+    public void delete (Delivery delivery){
+        em.remove(em.merge(delivery));
+    }
 
+   public void update (Delivery delivery){
+
+   }
 
 
 }

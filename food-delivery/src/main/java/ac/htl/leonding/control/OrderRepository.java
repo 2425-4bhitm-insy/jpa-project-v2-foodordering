@@ -22,4 +22,12 @@ public class OrderRepository {
     public void save(Order order){
         em.persist(order);
     }
+
+    public void delete(Order order){
+        em.remove(em.merge(order));
+    }
+
+    public void update(Order order){
+
+    }
 }

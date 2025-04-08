@@ -23,5 +23,12 @@ public class RestaurantRepository {
         em.persist(restaurant);
     }
 
+    public void update(Restaurant restaurant){
+
+    }
+
+    public void delete(Restaurant restaurant){
+        em.remove(em.merge(restaurant));
+    }
 
 }
