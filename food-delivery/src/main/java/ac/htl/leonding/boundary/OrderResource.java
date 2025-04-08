@@ -1,5 +1,6 @@
 package ac.htl.leonding.boundary;
 
+import ac.htl.leonding.control.OrderRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
@@ -7,8 +8,8 @@ import jakarta.ws.rs.core.*;
 @Path("/orders")
 public class OrderResource {
 
-//    @Inject
-//    OrderRepository orderRepository;
+    @Inject
+    OrderRepository orderRepository;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
