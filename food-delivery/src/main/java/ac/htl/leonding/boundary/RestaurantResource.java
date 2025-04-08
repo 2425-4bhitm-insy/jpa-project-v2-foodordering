@@ -1,5 +1,6 @@
 package ac.htl.leonding.boundary;
 
+import ac.htl.leonding.control.RestaurantRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
@@ -7,8 +8,8 @@ import jakarta.ws.rs.core.*;
 @Path("/restaurants")
 public class RestaurantResource {
 
-//    @Inject
-//    RestaurantRepository restaurantRepository;
+    @Inject
+    RestaurantRepository restaurantRepository;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
