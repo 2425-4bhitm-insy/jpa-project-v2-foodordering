@@ -14,8 +14,8 @@ public class Restaurant {
     private String address;
     private String rating;
 
-    @ManyToOne
-    private RestaurantOwner restaurantOwner;
+    @OneToMany
+    private List<Ownership> ownerships;
 
     @OneToOne
     private Menu menu;
