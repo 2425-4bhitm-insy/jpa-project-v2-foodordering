@@ -84,4 +84,11 @@ class Delivery {
 }
 Order "1" -- "1" Delivery
 DeliveryPerson "1" -- "N" Delivery
+
+class Ownership {
+    + restaurant: Restaurant
+    + restaurantOwner : RestaurantOwner
+}
+RestaurantOwner "1" -- "n" Ownership
+Restaurant "1" -- "n" Ownership
 @enduml
