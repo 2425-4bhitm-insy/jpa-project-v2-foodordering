@@ -74,10 +74,10 @@
             </dependency>
 
             <!-- Quarkus Hibernate ORM mit Panache -->
-        <!--<dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-orm-panache</artifactId>
-        </dependency> -->
+        </dependency>
 
         <!-- Quarkus JDBC für PostgreSQL -->
             <dependency>

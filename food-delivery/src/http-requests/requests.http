@@ -6,3 +6,19 @@ GET http://localhost:8080/orders
 
 ### Test Deliveries endpoint
 GET http://localhost:8080/deliveries
+
+###
+
+POST http://localhost:8080/deliveries
+Content-Type: application/json
+
+{
+  "status": "pending",
+  "estimatedTime": "2023-10-01T12:00:00Z"
+}
+
+###
+GET http://localhost:8080/deliveries/getAll
+
+###
+GET http://localhost:8080/deliveries/101

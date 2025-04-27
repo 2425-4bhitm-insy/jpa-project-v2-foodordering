@@ -1,59 +1,63 @@
 package ac.htl.leonding.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
+@Table(name = "DISH")
 public class Dish {
-    @Id
-    private Long id;
-    private String name;
-    private double price;
-    private String category;
-    private boolean isAvailable;
 
-    @ManyToOne
+    @Id
+    @SequenceGenerator(name = "dishSequence", sequenceName = "dish_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dishSequence")
+    private Long id;
+
+    @NotBlank(message = "Dish name is required")
+    @Column(name = "name")
+    private String name;
+
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be positive")
+    @Column(name = "price")
+    private Double price;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "isavailable")
+    private Boolean isAvailable = true;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    public Dish(Long id, String name, double price, String category, boolean isAvailable) {
-        this.id = id;
+    // Constructors
+    public Dish() {
+    }
+
+    public Dish(String name, Double price, String category, Boolean isAvailable) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.isAvailable = isAvailable;
     }
 
-    public Dish() {
-
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    // Getters and Setters
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
@@ -64,11 +68,11 @@ public class Dish {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -80,11 +84,65 @@ public class Dish {
         this.category = category;
     }
 
-    public boolean isAvailable() {
+    public Boolean getIsAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public void setIsAvailable(Boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    // Helper methods
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setDish(this);
+    }
+
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        orderItem.setDish(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Dish dish = (Dish) o;
+        return Objects.equals(id, dish.id) &&
+                Objects.equals(name, dish.name) &&
+                Objects.equals(price, dish.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price);
+    }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                ", isAvailable=" + isAvailable +
+                '}';
     }
 }
+

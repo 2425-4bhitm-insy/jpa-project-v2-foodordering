@@ -1,21 +1,48 @@
 package ac.htl.leonding.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
+@Table(name = "MENU")
 public class Menu {
+
     @Id
+    @SequenceGenerator(name = "menuSequence", sequenceName = "menu_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuSequence")
     private Long id;
+
+    @NotBlank(message = "Menu name is required")
+    @Column(name = "name")
     private String name;
 
     @OneToOne
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     private List<Dish> dishes = new ArrayList<>();
+
+
+    public Menu() {
+    }
+
+    public Menu(String name) {
+        this.name = name;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -41,11 +68,38 @@ public class Menu {
         this.dishes = dishes;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public void addDish(Dish dish) {
+        dishes.add(dish);
+        dish.setMenu(this);
     }
 
-    public Long getId() {
-        return id;
+    public void removeDish(Dish dish) {
+        dishes.remove(dish);
+        dish.setMenu(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Menu menu = (Menu) o;
+        return Objects.equals(id, menu.id) &&
+                Objects.equals(name, menu.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", restaurant=" + (restaurant != null ? restaurant.getId() : null) +
+                ", dishes=" + dishes.size() +
+                '}';
     }
 }

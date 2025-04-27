@@ -1,26 +1,57 @@
 package ac.htl.leonding.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class DeliveryPerson extends User{
-    @Id
-    private Long id;
+@Table(name = "DELIVERYPERSON")
+@DiscriminatorValue("DELIVERYPERSON")
+public class DeliveryPerson extends User {
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "deliveryPerson", cascade = CascadeType.ALL)
     private List<Delivery> deliveries = new ArrayList<>();
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public DeliveryPerson() {
+        super();
     }
 
-    public Long getId() {
-        return id;
+    public DeliveryPerson(String firstName, String lastName, String email, String phoneNumber, String address) {
+        super(firstName, lastName, email, phoneNumber, address);
+    }
+
+
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<Delivery> deliveries) {
+        this.deliveries = deliveries;
+    }
+
+
+    public void addDelivery(Delivery delivery) {
+        deliveries.add(delivery);
+        delivery.setDeliveryPerson(this);
+    }
+
+    public void removeDelivery(Delivery delivery) {
+        deliveries.remove(delivery);
+        delivery.setDeliveryPerson(null);
+    }
+
+    @Override
+    public String toString() {
+        return "DeliveryPerson{" +
+                "id=" + getId() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", phoneNumber='" + getPhoneNumber() + '\'' +
+                ", address='" + getAddress() + '\'' +
+                ", deliveries=" + deliveries.size() +
+                '}';
     }
 }
