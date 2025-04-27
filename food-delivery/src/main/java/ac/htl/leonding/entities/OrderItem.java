@@ -21,13 +21,15 @@ public class OrderItem {
     @JoinColumn(name = "dish_id")
     private Dish dish;
 
-
+    @Column(name = "quantity")
+    private int quantity;
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Dish dish) {
+    public OrderItem(Order order, Dish dish, int quantity) {
         this.order = order;
         this.dish = dish;
+        this.quantity = quantity;
     }
 
 
@@ -53,6 +55,14 @@ public class OrderItem {
 
     public void setDish(Dish dish) {
         this.dish = dish;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override
