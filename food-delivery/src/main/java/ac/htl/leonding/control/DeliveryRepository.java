@@ -2,43 +2,49 @@ package ac.htl.leonding.control;
 
 import ac.htl.leonding.boundary.DeliveryResource;
 import ac.htl.leonding.entities.Delivery;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
+
+
 @ApplicationScoped
-public class DeliveryRepository {
+public class DeliveryRepository implements PanacheRepository<Delivery> {
 
-    @Inject
-    EntityManager em;
+    public Delivery findByOrderId(Long orderId) {
+        return find("order.id", orderId).firstResult();
+    }
 
+    public List<Delivery> findByDeliveryPersonId(Long deliveryPersonId) {
+        return list("deliveryperson.id", deliveryPersonId);
+    }
 
+    public List<Delivery> findByStatus(String status) {
+        return list("status", status);
+    }
 
     public List<Delivery> getAll() {
-        return em.createQuery("select d from Delivery d", Delivery.class).getResultList();
+        return findAll().list();
     }
 
-    public List<Delivery> findAll() {
-         return em.createNamedQuery("Delivery.findAll", Delivery.class).getResultList();
+    public void save(Delivery delivery){
+        persist(delivery);
     }
 
-    public void save (Delivery delivery){
-        em.persist(delivery);
+    public void delete(Delivery delivery){
+        delete(delivery);
     }
 
-    public void delete (Delivery delivery){
-        em.remove(em.merge(delivery));
+    public void update(Delivery delivery){
+        update(delivery);
     }
 
     public Delivery findDeliveryById(Long id){
-        return em.createQuery("select d from Delivery d where d.id = :id", Delivery.class).setParameter("id", id).getSingleResult();
+        return find("id", id).firstResult();
     }
-
-   public void update (Delivery delivery){
-
-   }
 
 
 }
