@@ -1,6 +1,5 @@
 package ac.htl.leonding.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -11,11 +10,10 @@ import java.util.List;
 @DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
 

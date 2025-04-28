@@ -10,7 +10,7 @@ import java.util.List;
 @DiscriminatorValue("DELIVERYPERSON")
 public class DeliveryPerson extends User {
 
-    @OneToMany(mappedBy = "deliveryPerson", cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL)
     private List<Delivery> deliveries = new ArrayList<>();
 
 
@@ -32,15 +32,7 @@ public class DeliveryPerson extends User {
     }
 
 
-    public void addDelivery(Delivery delivery) {
-        deliveries.add(delivery);
-        delivery.setDeliveryPerson(this);
-    }
 
-    public void removeDelivery(Delivery delivery) {
-        deliveries.remove(delivery);
-        delivery.setDeliveryPerson(null);
-    }
 
     @Override
     public String toString() {

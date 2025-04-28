@@ -29,9 +29,10 @@ public class Payment {
     @Column(name = "status")
     private String status = "PENDING";
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Order order;
+
+
 
 
     public Payment() {
@@ -76,26 +77,18 @@ public class Payment {
         this.status = status;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
-        return Objects.equals(id, payment.id) &&
-                Objects.equals(order, payment.order);
+        return Objects.equals(id, payment.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, order);
+        return Objects.hash(id);
     }
 
     @Override
@@ -105,7 +98,6 @@ public class Payment {
                 ", amount=" + amount +
                 ", paymentMethod='" + paymentMethod + '\'' +
                 ", status='" + status + '\'' +
-                ", orderId=" + (order != null ? order.getId() : null) +
                 '}';
     }
 }

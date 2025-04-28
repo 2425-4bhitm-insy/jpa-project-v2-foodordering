@@ -1,11 +1,8 @@
 package ac.htl.leonding.control;
 
-import ac.htl.leonding.boundary.DeliveryResource;
 import ac.htl.leonding.entities.Delivery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
@@ -26,24 +23,21 @@ public class DeliveryRepository implements PanacheRepository<Delivery> {
         return list("status", status);
     }
 
-    public List<Delivery> getAll() {
-        return findAll().list();
+    public List<Delivery> listAll() {
+        return listAll();
     }
 
-    public void save(Delivery delivery){
-        persist(delivery);
-    }
-
-    public void delete(Delivery delivery){
-        delete(delivery);
-    }
-
-    public void update(Delivery delivery){
-        update(delivery);
-    }
-
-    public Delivery findDeliveryById(Long id){
+    public Delivery findById(Long id){
         return find("id", id).firstResult();
+    }
+
+    public boolean deleteById(Long id) {
+        try {
+            deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 

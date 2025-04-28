@@ -33,12 +33,9 @@ public class Dish {
     @Column(name = "isavailable")
     private Boolean isAvailable = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Menu menu;
 
-    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
 
     // Constructors
     public Dish() {
@@ -100,24 +97,7 @@ public class Dish {
         this.menu = menu;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    // Helper methods
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setDish(this);
-    }
-
-    public void removeOrderItem(OrderItem orderItem) {
-        orderItems.remove(orderItem);
-        orderItem.setDish(null);
-    }
 
     @Override
     public boolean equals(Object o) {

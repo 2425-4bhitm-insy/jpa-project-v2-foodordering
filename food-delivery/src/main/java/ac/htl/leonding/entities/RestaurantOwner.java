@@ -1,6 +1,7 @@
 package ac.htl.leonding.entities;
 
 import jakarta.persistence.*;
+import net.bytebuddy.description.modifier.Ownership;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +11,7 @@ import java.util.List;
 @DiscriminatorValue("RESTAURANTOWNER")
 public class RestaurantOwner extends User {
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Ownership> ownerships = new ArrayList<>();
-
-    @OneToMany(mappedBy = "restaurantOwner", cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL)
     private List<Restaurant> restaurants = new ArrayList<>();
 
 
@@ -23,15 +21,6 @@ public class RestaurantOwner extends User {
 
     public RestaurantOwner(String firstName, String lastName, String email, String phoneNumber, String address) {
         super(firstName, lastName, email, phoneNumber, address);
-    }
-
-
-    public List<Ownership> getOwnerships() {
-        return ownerships;
-    }
-
-    public void setOwnerships(List<Ownership> ownerships) {
-        this.ownerships = ownerships;
     }
 
     public List<Restaurant> getRestaurants() {
@@ -53,15 +42,6 @@ public class RestaurantOwner extends User {
         restaurant.setRestaurantOwner(null);
     }
 
-    public void addOwnership(Ownership ownership) {
-        ownerships.add(ownership);
-        ownership.setOwner(this);
-    }
-
-    public void removeOwnership(Ownership ownership) {
-        ownerships.remove(ownership);
-        ownership.setOwner(null);
-    }
 
     @Override
     public String toString() {
@@ -73,7 +53,6 @@ public class RestaurantOwner extends User {
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", address='" + getAddress() + '\'' +
                 ", restaurants=" + restaurants.size() +
-                ", ownerships=" + ownerships.size() +
                 '}';
     }
 }

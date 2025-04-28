@@ -2,6 +2,7 @@ package ac.htl.leonding.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import net.bytebuddy.description.modifier.Ownership;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +32,17 @@ public class Restaurant {
     private String rating;
 
     @ManyToOne
-    @JoinColumn(name = "restaurantowner_id")
     private RestaurantOwner restaurantOwner;
 
-    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private Menu menu;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+
+    @OneToMany( cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Ownership> ownerships = new ArrayList<>();
+
 
 
     public Restaurant() {
@@ -105,16 +103,7 @@ public class Restaurant {
         this.restaurantOwner = restaurantOwner;
     }
 
-    public Menu getMenu() {
-        return menu;
-    }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-        if (menu != null) {
-            menu.setRestaurant(this);
-        }
-    }
 
     public List<Order> getOrders() {
         return orders;
@@ -132,13 +121,6 @@ public class Restaurant {
         this.reviews = reviews;
     }
 
-    public List<Ownership> getOwnerships() {
-        return ownerships;
-    }
-
-    public void setOwnerships(List<Ownership> ownerships) {
-        this.ownerships = ownerships;
-    }
 
 
     public void addOrder(Order order) {
@@ -161,15 +143,6 @@ public class Restaurant {
         review.setRestaurant(null);
     }
 
-    public void addOwnership(Ownership ownership) {
-        ownerships.add(ownership);
-        ownership.setRestaurant(this);
-    }
-
-    public void removeOwnership(Ownership ownership) {
-        ownerships.remove(ownership);
-        ownership.setRestaurant(null);
-    }
 
     @Override
     public boolean equals(Object o) {

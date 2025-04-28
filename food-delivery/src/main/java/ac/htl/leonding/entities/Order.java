@@ -1,6 +1,5 @@
 package ac.htl.leonding.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -52,23 +51,18 @@ public class Order {
     @Column(name = "status")
     private String status = "PENDING";
 
-    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private Payment payment;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Payment> payments = new ArrayList<>();
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private Delivery delivery;
+
+
 
 
     public Order() {
@@ -138,53 +132,13 @@ public class Order {
         this.restaurant = restaurant;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-        if (payment != null) {
-            payment.setOrder(this);
-        }
-    }
-
-    public Delivery getDelivery() {
-        return delivery;
-    }
-
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
-        if (delivery != null) {
-            delivery.setOrder(this);
-        }
-    }
 
 
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this);
-    }
-
-    public void removeOrderItem(OrderItem orderItem) {
-        orderItems.remove(orderItem);
-        orderItem.setOrder(null);
-    }
 
 
-    public void calculateTotalPrice() {
-        this.totalPrice = orderItems.stream()
-                .mapToDouble(item -> item.getDish().getPrice())
-                .sum();
-    }
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -209,5 +163,13 @@ public class Order {
                 ", totalPrice=" + totalPrice +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }

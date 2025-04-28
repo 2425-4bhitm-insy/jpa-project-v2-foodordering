@@ -18,12 +18,10 @@ public class Review {
     @Column(name = "rating")
     private String rating;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Restaurant restaurant;
 
 

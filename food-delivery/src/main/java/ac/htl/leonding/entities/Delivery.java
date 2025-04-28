@@ -36,12 +36,7 @@ public class Delivery {
     @Column(name = "status")
     private String status = "PENDING";
 
-    @ManyToOne
-    @JoinColumn(name = "deliveryperson_id")
-    private DeliveryPerson deliveryPerson;
-
     @OneToOne
-    @JoinColumn(name = "order_id")
     private Order order;
 
 
@@ -78,13 +73,7 @@ public class Delivery {
         this.status = status;
     }
 
-    public DeliveryPerson getDeliveryPerson() {
-        return deliveryPerson;
-    }
 
-    public void setDeliveryPerson(DeliveryPerson deliveryPerson) {
-        this.deliveryPerson = deliveryPerson;
-    }
 
     public Order getOrder() {
         return order;
@@ -108,5 +97,13 @@ public class Delivery {
         return Objects.hash(id, order);
     }
 
-
+    @Override
+    public String toString() {
+        return "Delivery{" +
+                "id=" + id +
+                ", estimatedTime=" + estimatedTime +
+                ", status='" + status + '\'' +
+                ", orderId=" + (order != null ? order.getId() : null) +
+                '}';
+    }
 }

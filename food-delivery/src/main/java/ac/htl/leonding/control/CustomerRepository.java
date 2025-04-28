@@ -16,7 +16,7 @@ import java.util.List;
 public class CustomerRepository implements PanacheRepository<Customer> {
 
     public List<Customer> listAll() {
-        return findAll().list();
+        return listAll();
     }
 
     public List<Order> findAllOrders(Long customerId) {
@@ -26,5 +26,9 @@ public class CustomerRepository implements PanacheRepository<Customer> {
 
     public Customer findById(Long id) {
         return find("id", id).firstResult();
+    }
+
+    public Customer update(Customer customer) {
+
     }
 }

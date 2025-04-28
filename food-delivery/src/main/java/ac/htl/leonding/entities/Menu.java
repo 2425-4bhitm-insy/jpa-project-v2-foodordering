@@ -20,11 +20,8 @@ public class Menu {
     @Column(name = "name")
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Dish> dishes = new ArrayList<>();
 
 
@@ -50,14 +47,6 @@ public class Menu {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
     public List<Dish> getDishes() {
@@ -98,7 +87,6 @@ public class Menu {
         return "Menu{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", restaurant=" + (restaurant != null ? restaurant.getId() : null) +
                 ", dishes=" + dishes.size() +
                 '}';
     }
