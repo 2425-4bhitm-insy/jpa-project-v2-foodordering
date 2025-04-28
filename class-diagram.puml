@@ -1,94 +1,146 @@
-@startuml
-class User {
-  + id : Long
-  + name : String
-  + email : String
-  + phoneNumber : String
-  + address : String
+@startuml FoodOrderingSystem
+
+' Entity definitions with attributes
+class USERS {
+  +id : int
+  +address : String
+  +email : String
+  +firstname : String
+  +lastname : String
+  +phonenumber : String
+  +dtype : String
 }
 
-class Customer {
-  + orders : List<Order>
-}
-class RestaurantOwner {
-  + restaurants : List<Restaurant>
-}
-class DeliveryPerson {
-  + deliveries : List<Delivery>
+class CUSTOMER {
+  +id : int
 }
 
-User <|-- Customer
-User <|-- RestaurantOwner
-User <|-- DeliveryPerson
-
-class Restaurant {
-  + id : Long
-  + name : String
-  + description : String
-  + address : String
-  + rating : Float
+class RESTAURANTOWNER {
+  +id : int
 }
 
-class Menu {
-  + id : Long
-  + name : String
+class RESTAURANT {
+  +id : int
+  +address : String
+  +description : String
+  +name : String
+  +rating : String
+  +restaurantowner_id : int
+  +menu_id : int
 }
-Restaurant "1" -- "1" Menu
 
-class Dish {
-  + id : Long
-  + name : String
-  + price : Float
-  + category : String
-  + available : Boolean
+class MENU {
+  +id : int
+  +name : String
+  +restaurant_id : int
 }
-Menu "1" -- "N" Dish
 
-class Order {
-  + id : Long
-  + status : String
-  + totalPrice : Float
-  + orderDate : Date
-  + deliveryAddress : String
+class DISH {
+  +id : int
+  +category : String
+  +isavailable : boolean
+  +name : String
+  +price : double
+  +menu_id : int
 }
-Customer "1" -- "N" Order
-Restaurant "1" -- "N" Order
 
-class OrderItem {
-  + quantity : Int
-  + price : Float
+class ORDERS {
+  +id : int
+  +deliveryaddress : String
+  +orderdate : timestamp
+  +status : String
+  +totalprice : double
+  +customer_id : int
+  +delivery_id : int
+  +orderitem_id : int
+  +payment_id : int
+  +restaurant_id : int
 }
-Order "1" -- "N" OrderItem
-Dish "1" -- "N" OrderItem
 
-class Payment {
-  + id : Long
-  + paymentMethod : String
-  + status : String
-  + amount : Float
+class ORDERITEM {
+  +id : int
+  +dish_id : int
+  +order_id : int
 }
-Order "1" -- "1" Payment
 
-class Review {
-  + id : Long
-  + rating : Int
-  + comment : String
+class PAYMENT {
+  +id : int
+  +amount : double
+  +paymentmethod : String
+  +status : String
+  +order_id : int
 }
-Customer "1" -- "N" Review
-Restaurant "1" -- "N" Review
 
-class Delivery {
-  + id : Long
-  + status : String
-  + estimatedTime : Date
+class DELIVERY {
+  +id : int
+  +estimatedtime : timestamp
+  +status : String
+  +deliveryperson_id : int
+  +order_id : int
 }
-Order "1" -- "1" Delivery
-DeliveryPerson "1" -- "N" Delivery
 
-class Ownership {
-    + restaurant: Restaurant
-    + restaurantOwner : RestaurantOwner
+class DELIVERYPERSON {
+  +id : int
 }
-RestaurantOwner "1" -- "n" Ownership
-Restaurant "1" -- "n" Ownership
+
+class CUSTOMER_ORDERS {
+  +customer_id : int
+  +orders_id : int
+}
+
+class REVIEW {
+  +id : int
+  +customer_id : int
+  +restaurant_id : int
+  +rating : String
+}
+
+class OWNERSHIP {
+  +id : int
+  +restaurant_id : int
+  +restaurantowner_id : int
+}
+
+class RESTAURANT_OWNERSHIP {
+  +restaurant_id : int
+  +ownerships_id : int
+}
+
+class RESTAURANTOWNER_RESTAURANT {
+  +restaurantowner_id : int
+  +restaurants_id : int
+}
+
+class DELIVERYPERSON_DELIVERY {
+  +deliveryperson_id : int
+  +deliveries_id : int
+}
+
+' Relationships
+USERS "1" -- "0..1" CUSTOMER : is a
+USERS "1" -- "0..1" RESTAURANTOWNER : is a
+USERS "1" -- "0..1" DELIVERYPERSON : is a
+
+CUSTOMER "1" -- "*" CUSTOMER_ORDERS : has
+CUSTOMER_ORDERS "*" -- "1" ORDERS : contains
+CUSTOMER "1" -- "*" REVIEW : writes
+
+RESTAURANTOWNER "1" -- "*" RESTAURANTOWNER_RESTAURANT : owns
+RESTAURANTOWNER_RESTAURANT "*" -- "1" RESTAURANT : belongs to
+
+RESTAURANT "1" -- "*" OWNERSHIP : has
+OWNERSHIP "*" -- "1" RESTAURANTOWNER : owns
+RESTAURANT "1" -- "1" MENU : has
+RESTAURANT "1" -- "*" REVIEW : receives
+
+MENU "1" -- "*" DISH : contains
+
+ORDERS "1" -- "1" PAYMENT : has
+ORDERS "1" -- "1" DELIVERY : has
+ORDERS "1" -- "*" ORDERITEM : contains
+ORDERITEM "*" -- "1" DISH : references
+
+DELIVERYPERSON "1" -- "*" DELIVERYPERSON_DELIVERY : assigned
+DELIVERYPERSON_DELIVERY "*" -- "1" DELIVERY : delivered by
+
 @enduml
