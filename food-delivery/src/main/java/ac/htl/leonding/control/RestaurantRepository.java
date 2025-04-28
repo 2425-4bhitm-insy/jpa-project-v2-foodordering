@@ -1,6 +1,7 @@
 package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Restaurant;
+import ac.htl.leonding.entities.dto.RestaurantDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -31,6 +32,20 @@ public class RestaurantRepository {
     public List<Restaurant> findByRating(String minRating) {
         return em.createQuery("SELECT r FROM Restaurant r WHERE r.rating >= :minRating", Restaurant.class)
                 .setParameter("minRating", minRating)
+                .getResultList();
+    }
+
+    public List<Restaurant> findByRatingAbove(Double minRating) {
+        return em.createQuery("SELECT r FROM Restaurant r WHERE CAST(r.rating AS double) > :minRating", Restaurant.class)
+                .setParameter("minRating", minRating)
+                .getResultList();
+    }
+
+    public List<Object[]> findRestaurantsWithHighAverageRating() {
+        return em.createQuery("SELECT r, AVG(CAST(rv.rating AS double)) " +
+                        "FROM Restaurant r JOIN r.reviews rv " +
+                        "GROUP BY r.id " +
+                        "HAVING AVG(CAST(rv.rating AS double)) > 4")
                 .getResultList();
     }
 

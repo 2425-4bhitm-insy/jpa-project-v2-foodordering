@@ -53,6 +53,13 @@ public class CustomerResource {
         return Response.ok(orderDTOs).build();
     }
 
+    @GET
+    @Path("/with-orders")
+    public Response getAllCustomersWithOrderInfo() {
+        List<Object[]> customersWithOrders = customerRepository.findAllCustomersWithOrderInfo();
+        return Response.ok(customersWithOrders).build();
+    }
+
     @POST
     @Transactional
     public Response createCustomer(CustomerDTO customerDTO) {

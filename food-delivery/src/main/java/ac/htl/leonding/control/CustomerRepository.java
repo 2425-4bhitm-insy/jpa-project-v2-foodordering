@@ -30,6 +30,13 @@ public class CustomerRepository {
         return em.find(Customer.class, id);
     }
 
+    public List<Object[]> findAllCustomersWithOrderInfo() {
+        return em.createQuery("SELECT c, COUNT(o), SUM(o.totalPrice) " +
+                        "FROM Customer c LEFT JOIN c.orders o " +
+                        "GROUP BY c.id")
+                .getResultList();
+    }
+
     public CustomerDTO entityToDTO(Customer customer) {
         return new CustomerDTO(
                 customer.getId(),

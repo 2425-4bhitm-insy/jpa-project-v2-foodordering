@@ -35,6 +35,20 @@ public class RestaurantResource {
     }
 
     @GET
+    @Path("/rating-above/{minRating}")
+    public Response getRestaurantsWithRatingAbove(@PathParam("minRating") Double minRating) {
+        List<Restaurant> restaurants = restaurantRepository.findByRatingAbove(minRating);
+        return Response.ok(restaurants).build();
+    }
+
+    @GET
+    @Path("/high-rated")
+    public Response getHighRatedRestaurants() {
+        List<Object[]> restaurantsWithAvgRating = restaurantRepository.findRestaurantsWithHighAverageRating();
+        return Response.ok(restaurantsWithAvgRating).build();
+    }
+
+    @GET
     @Path("/search")
     public Response searchRestaurantsByName(@QueryParam("name") String name) {
         List<Restaurant> restaurants = restaurantRepository.findByName(name);
