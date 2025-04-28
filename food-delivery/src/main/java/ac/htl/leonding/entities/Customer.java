@@ -1,5 +1,6 @@
 package ac.htl.leonding.entities;
 
+import ac.htl.leonding.entities.dto.CustomerDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ public class Customer extends User {
         reviews.remove(review);
         review.setCustomer(null);
     }
+
+
 
     @Override
     public String toString() {

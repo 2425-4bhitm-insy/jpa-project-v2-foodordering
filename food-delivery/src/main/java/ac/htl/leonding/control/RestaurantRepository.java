@@ -34,6 +34,36 @@ public class RestaurantRepository {
                 .getResultList();
     }
 
+    public RestaurantDTO entityToDTO(Restaurant restaurant) {
+        return new RestaurantDTO(
+                restaurant.getId(),
+                restaurant.getName(),
+                restaurant.getAddress(),
+                restaurant.getPhone(),
+                restaurant.getCuisine(),
+                restaurant.getRating(),
+                restaurant.getIsOpen()
+        );
+    }
+
+    public List<RestaurantDTO> entityToDTO(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .map(this::entityToDTO)
+                .toList();
+    }
+
+    public Restaurant dtoToEntity(RestaurantDTO dto) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(dto.id());
+        restaurant.setName(dto.name());
+        restaurant.setAddress(dto.address());
+        restaurant.setPhone(dto.phone());
+        restaurant.setCuisine(dto.cuisine());
+        restaurant.setRating(dto.rating());
+        restaurant.setIsOpen(dto.isOpen());
+        return restaurant;
+    }
+
     @Transactional
     public void save(Restaurant restaurant) {
         em.persist(restaurant);

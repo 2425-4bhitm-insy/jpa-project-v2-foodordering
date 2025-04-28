@@ -1,5 +1,6 @@
 package ac.htl.leonding.entities;
 
+import ac.htl.leonding.entities.dto.OrderDTO;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -131,13 +132,6 @@ public class Order {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
-
-
-
-
-
-
-
 
 
     @Override

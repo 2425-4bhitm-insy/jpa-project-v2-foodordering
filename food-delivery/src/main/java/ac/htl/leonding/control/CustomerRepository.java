@@ -2,6 +2,7 @@ package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Customer;
 import ac.htl.leonding.entities.Order;
+import ac.htl.leonding.entities.dto.CustomerDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -27,6 +28,34 @@ public class CustomerRepository {
 
     public Customer findById(Long id) {
         return em.find(Customer.class, id);
+    }
+
+    public CustomerDTO entityToDTO(Customer customer) {
+        return new CustomerDTO(
+                customer.getId(),
+                customer.getFirstName(),
+                customer.getFirstName(),
+                customer.getEmail(),
+                customer.getPhoneNumber(),
+                customer.getAddress()
+        );
+    }
+
+    public List<CustomerDTO> entityToDTO(List<Customer> customers) {
+        return customers.stream()
+                .map(this::entityToDTO)
+                .toList();
+    }
+
+    public Customer dtoToEntity(CustomerDTO dto) {
+        Customer customer = new Customer();
+        customer.setId(dto.id());
+        customer.setFirstName(dto.firstName());
+        customer.setLastName(dto.lastName());
+        customer.setEmail(dto.email());
+        customer.setPhoneNumber(dto.phone());
+        customer.setAddress(dto.address());
+        return customer;
     }
 
     @Transactional

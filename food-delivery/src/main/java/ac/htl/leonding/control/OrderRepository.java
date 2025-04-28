@@ -1,6 +1,7 @@
 package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Order;
+import ac.htl.leonding.entities.dto.OrderDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -61,5 +62,34 @@ public class OrderRepository {
         if (entity != null) {
             em.remove(entity);
         }
+    }
+
+    public OrderDTO entityToDTO(Order order) {
+        return new OrderDTO(
+                order.getId(),
+                order.getCustomer() != null ? order.getCustomer().getId() : null,
+                order.getRestaurant() != null ? order.getRestaurant().getId() : null,
+                order.getStatus(),
+                order.getTotalPrice(),
+                order.getOrderDate()
+
+        );
+    }
+
+    public List<OrderDTO> entityToDTO(List<Order> orders) {
+        return orders.stream()
+                .map(this::entityToDTO)
+                .toList();
+    }
+
+    public Order dtoToEntity(OrderDTO dto) {
+        Order order = new Order();
+        order.setId(dto.id());
+        // Customer und Restaurant müssen separat gesetzt werden
+        order.setStatus(dto.status());
+        order.setTotalPrice(dto.totalPrice());
+        order.setOrderDate(dto.orderDate());
+
+        return order;
     }
 }
