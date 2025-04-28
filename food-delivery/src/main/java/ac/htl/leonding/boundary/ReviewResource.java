@@ -1,6 +1,5 @@
-package ac.htl.leonding.boundary;
+package ac.htl.leonding.boundary;//package ac.htl.leonding.boundary;
 
-import ac.htl.leonding.control.ReviewRepository;
 import ac.htl.leonding.entities.Review;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -59,9 +58,8 @@ public class ReviewResource {
     @Transactional
     public Response deleteReview(@PathParam("id") Long id) {
         boolean deleted = reviewRepository.deleteById(id);
-        if (deleted) {
-            return Response.noContent().build();
+        if (deleted) {return Response.noContent().build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
-    }
+      return Response.status(Response.Status.NOT_FOUND).build();
+   }
 }

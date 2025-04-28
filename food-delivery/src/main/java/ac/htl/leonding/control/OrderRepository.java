@@ -2,7 +2,7 @@ package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Delivery;
 import ac.htl.leonding.entities.Order;
-import ac.htl.leonding.entities.OrderItem;
+
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

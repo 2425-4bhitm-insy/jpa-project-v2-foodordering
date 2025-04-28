@@ -28,7 +28,5 @@ public class CustomerRepository implements PanacheRepository<Customer> {
         return find("id", id).firstResult();
     }
 
-    public Customer update(Customer customer) {
 
-    }
 }

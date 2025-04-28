@@ -1,7 +1,5 @@
 package ac.htl.leonding.boundary;
 
-import ac.htl.leonding.control.DishRepository;
-import ac.htl.leonding.control.MenuRepository;
 import ac.htl.leonding.entities.Dish;
 import ac.htl.leonding.entities.Menu;
 import jakarta.inject.Inject;
