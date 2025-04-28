@@ -1,5 +1,6 @@
 package ac.htl.leonding.boundary;//package ac.htl.leonding.boundary;
 
+import ac.htl.leonding.control.ReviewRepository;
 import ac.htl.leonding.entities.Review;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

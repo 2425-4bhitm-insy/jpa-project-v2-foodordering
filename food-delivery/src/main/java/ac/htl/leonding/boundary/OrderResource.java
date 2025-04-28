@@ -1,7 +1,8 @@
 package ac.htl.leonding.boundary;//package ac.htl.leonding.boundary;
 
+import ac.htl.leonding.control.OrderRepository;
 import ac.htl.leonding.entities.Order;
-import ac.htl.leonding.entities.OrderItem;
+
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -17,8 +18,7 @@ public class OrderResource {
     @Inject
     OrderRepository orderRepository;
 
-    @Inject
-    OrderItemRepository orderItemRepository;
+
 
     @GET
     public List<Order> getAllOrders() {
@@ -70,26 +70,8 @@ public class OrderResource {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    @GET
-    @Path("/{id}/items")
-    public List<OrderItem> getOrderItems(@PathParam("id") Long id) {
-        return orderItemRepository.findByOrderId(id);
-    }
 
-    @POST
-    @Path("/{id}/items")
-    @Transactional
-    public Response addItemToOrder(@PathParam("id") Long id, OrderItem item) {
-        Order order = orderRepository.findById(id);
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
 
-        item.setOrder(order);
-        orderItemRepository.persist(item);
-
-        return Response.status(Response.Status.CREATED).entity(item).build();
-    }
 
 
 
