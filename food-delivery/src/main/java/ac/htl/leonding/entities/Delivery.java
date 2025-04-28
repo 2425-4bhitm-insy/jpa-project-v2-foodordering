@@ -108,14 +108,5 @@ public class Delivery {
         return Objects.hash(id, order);
     }
 
-    @Override
-    public String toString() {
-        return "Delivery{" +
-                "id=" + id +
-                ", estimatedTime=" + estimatedTime +
-                ", status='" + status + '\'' +
-                ", deliveryPersonId=" + (deliveryPerson != null ? deliveryPerson.getId() : null) +
-                ", orderId=" + (order != null ? order.getId() : null) +
-                '}';
-    }
+
 }

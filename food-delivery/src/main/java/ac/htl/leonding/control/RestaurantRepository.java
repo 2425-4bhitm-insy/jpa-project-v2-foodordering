@@ -14,28 +14,27 @@ import java.util.List;
 @ApplicationScoped
 public class RestaurantRepository implements PanacheRepository<Restaurant> {
 
-    // Find by name
+    public List<Restaurant> findAllRestaurants() {
+        return findAll().list();
+    }
+
     public List<Restaurant> findByName(String name) {
         return list("name LIKE ?1", "%" + name + "%");
     }
 
-    // Complex query 2: Find restaurants with rating above threshold and minimum number of reviews
-    public List<Restaurant> findTopRatedRestaurants(String minRating, int minReviewCount) {
-        return getEntityManager()
-                .createQuery(
-                        "SELECT r FROM Restaurant r " +
-                                "LEFT JOIN r.reviews rv " +
-                                "GROUP BY r.id " +
-                                "HAVING r.rating >= :minRating AND COUNT(rv) >= :minReviewCount " +
-                                "ORDER BY r.rating DESC",
-                        Restaurant.class)
-                .setParameter("minRating", minRating)
-                .setParameter("minReviewCount", minReviewCount)
-                .getResultList();
+    public List<Restaurant> findByRating(String minRating) {
+        return list("rating >= ?1", minRating);
     }
 
-    // Find restaurants by owner
-    public List<Restaurant> findByOwner(Long ownerId) {
-        return list("restaurantOwner.id", ownerId);
+    public void save(Restaurant restaurant){
+        persist(restaurant);
+    }
+
+    public void delete(Restaurant restaurant){
+        delete(restaurant);
+    }
+
+    public void update(Restaurant restaurant){
+        update(restaurant);
     }
 }

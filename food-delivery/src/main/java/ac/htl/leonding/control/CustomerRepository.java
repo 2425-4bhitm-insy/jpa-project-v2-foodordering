@@ -6,44 +6,25 @@ import ac.htl.leonding.entities.Customer;
 import ac.htl.leonding.entities.Order;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
 
 @ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
 public class CustomerRepository implements PanacheRepository<Customer> {
 
-    public List<Customer> getAll() {
+    public List<Customer> listAll() {
         return findAll().list();
     }
 
-    public Customer findByID(Long )
-
-    public Customer findByEmail(String email) {
-        return find("email", email).firstResult();
+    public List<Order> findAllOrders(Long customerId) {
+        Customer customer = findById(customerId);
+        return customer != null ? customer.getOrders() : List.of();
     }
 
-
-    public List<Customer> findCustomersWithOrdersFromRestaurant(Long restaurantId) {
-        return getEntityManager()
-                .createQuery(
-                        "SELECT DISTINCT c FROM Customer c " +
-                                "JOIN FETCH c.orders o " +
-                                "WHERE o.restaurant.id = :restaurantId",
-                        Customer.class)
-                .setParameter("restaurantId", restaurantId)
-                .getResultList();
-    }
-
-
-    public List<Customer> findTopCustomersByOrderCount(int limit) {
-        return getEntityManager()
-                .createQuery(
-                        "SELECT c FROM Customer c " +
-                                "LEFT JOIN c.orders o " +
-                                "GROUP BY c.id " +
-                                "ORDER BY COUNT(o) DESC",
-                        Customer.class)
-                .setMaxResults(limit)
-                .getResultList();
+    public Customer findById(Long id) {
+        return find("id", id).firstResult();
     }
 }

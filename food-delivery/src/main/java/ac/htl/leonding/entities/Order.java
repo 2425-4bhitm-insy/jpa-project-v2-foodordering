@@ -1,5 +1,6 @@
 package ac.htl.leonding.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -51,6 +52,7 @@ public class Order {
     @Column(name = "status")
     private String status = "PENDING";
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
