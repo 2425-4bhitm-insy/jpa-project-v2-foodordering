@@ -1,8 +1,6 @@
 package ac.htl.leonding.boundary;
 
-import ac.htl.leonding.control.DishRepository;
 import ac.htl.leonding.control.MenuRepository;
-import ac.htl.leonding.entities.Dish;
 import ac.htl.leonding.entities.Menu;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -20,22 +18,30 @@ public class MenuResource {
     @Inject
     MenuRepository menuRepository;
 
-    @Inject
-    DishRepository dishRepository;
-
     @GET
-    public List<Menu> getAllMenus() {
-        return menuRepository.listAll();
+    public Response getAllMenus() {
+        List<Menu> menus = menuRepository.listAll();
+        return Response.ok(menus).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getMenuById(@PathParam("id") Long id) {
         Menu menu = menuRepository.findById(id);
-        if (menu != null) {
-            return Response.ok(menu).build();
+        if (menu == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(menu).build();
+    }
+
+    @GET
+    @Path("/restaurant/{restaurantId}")
+    public Response getMenuByRestaurantId(@PathParam("restaurantId") Long restaurantId) {
+        Menu menu = menuRepository.findMenuByRestaurantId(restaurantId);
+        if (menu == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(menu).build();
     }
 
     @POST
@@ -49,45 +55,26 @@ public class MenuResource {
     @Path("/{id}")
     @Transactional
     public Response updateMenu(@PathParam("id") Long id, Menu menu) {
-        Menu entity = menuRepository.findById(id);
-        if (entity == null) {
+        Menu existingMenu = menuRepository.findById(id);
+        if (existingMenu == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        entity.setName(menu.getName());
-
-        return Response.ok(entity).build();
+        menu.setId(id);
+        Menu updated = menuRepository.update(menu);
+        return Response.ok(updated).build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
     public Response deleteMenu(@PathParam("id") Long id) {
-        boolean deleted = menuRepository.deleteById(id);
-        if (deleted) {
-            return Response.noContent().build();
-        }
-        return Response.status(Response.Status.NOT_FOUND).build();
-    }
-
-    @GET
-    @Path("/{id}/dishes")
-    public List<Dish> getMenuDishes(@PathParam("id") Long id) {
-        return dishRepository.findAvailableByMenuId(id);
-    }
-
-    @POST
-    @Path("/{id}/dishes")
-    @Transactional
-    public Response addDishToMenu(@PathParam("id") Long id, Dish dish) {
         Menu menu = menuRepository.findById(id);
         if (menu == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        dish.setMenu(menu);
-        dishRepository.persist(dish);
-
-        return Response.status(Response.Status.CREATED).entity(dish).build();
+        menuRepository.deleteById(id);
+        return Response.noContent().build();
     }
 }

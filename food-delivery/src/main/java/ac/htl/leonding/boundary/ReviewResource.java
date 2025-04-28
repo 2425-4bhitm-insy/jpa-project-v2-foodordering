@@ -1,4 +1,4 @@
-package ac.htl.leonding.boundary;//package ac.htl.leonding.boundary;
+package ac.htl.leonding.boundary;
 
 import ac.htl.leonding.control.ReviewRepository;
 import ac.htl.leonding.entities.Review;
@@ -19,24 +19,46 @@ public class ReviewResource {
     ReviewRepository reviewRepository;
 
     @GET
-    public List<Review> getAllReviews() {
-        return reviewRepository.listAll();
+    public Response getAllReviews() {
+        List<Review> reviews = reviewRepository.getAll();
+        return Response.ok(reviews).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getReviewById(@PathParam("id") Long id) {
         Review review = reviewRepository.findById(id);
-        if (review != null) {
-            return Response.ok(review).build();
+        if (review == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(review).build();
+    }
+
+    @GET
+    @Path("/restaurant/{restaurantId}")
+    public Response getReviewsByRestaurantId(@PathParam("restaurantId") Long restaurantId) {
+        List<Review> reviews = reviewRepository.findByRestaurantId(restaurantId);
+        return Response.ok(reviews).build();
+    }
+
+    @GET
+    @Path("/customer/{customerId}")
+    public Response getReviewsByCustomerId(@PathParam("customerId") Long customerId) {
+        List<Review> reviews = reviewRepository.findByCustomerId(customerId);
+        return Response.ok(reviews).build();
+    }
+
+    @GET
+    @Path("/restaurant/{restaurantId}/average")
+    public Response getAverageRatingForRestaurant(@PathParam("restaurantId") Long restaurantId) {
+        Double averageRating = reviewRepository.getAverageRatingForRestaurant(restaurantId);
+        return Response.ok(averageRating).build();
     }
 
     @POST
     @Transactional
     public Response createReview(Review review) {
-        reviewRepository.persist(review);
+        reviewRepository.save(review);
         return Response.status(Response.Status.CREATED).entity(review).build();
     }
 
@@ -44,23 +66,26 @@ public class ReviewResource {
     @Path("/{id}")
     @Transactional
     public Response updateReview(@PathParam("id") Long id, Review review) {
-        Review entity = reviewRepository.findById(id);
-        if (entity == null) {
+        Review existingReview = reviewRepository.findById(id);
+        if (existingReview == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        entity.setRating(review.getRating());
-
-        return Response.ok(entity).build();
+        review.setId(id);
+        Review updated = reviewRepository.update(review);
+        return Response.ok(updated).build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
     public Response deleteReview(@PathParam("id") Long id) {
-        boolean deleted = reviewRepository.deleteById(id);
-        if (deleted) {return Response.noContent().build();
+        Review review = reviewRepository.findById(id);
+        if (review == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-      return Response.status(Response.Status.NOT_FOUND).build();
-   }
+
+        reviewRepository.deleteById(id);
+        return Response.noContent().build();
+    }
 }

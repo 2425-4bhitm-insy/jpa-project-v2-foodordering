@@ -1,12 +1,12 @@
-package ac.htl.leonding.boundary;//package ac.htl.leonding.boundary;
+package ac.htl.leonding.boundary;
 
 import ac.htl.leonding.control.OrderRepository;
 import ac.htl.leonding.entities.Order;
-
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -18,27 +18,47 @@ public class OrderResource {
     @Inject
     OrderRepository orderRepository;
 
-
-
     @GET
-    public List<Order> getAllOrders() {
-        return orderRepository.listAll();
+    public Response getAllOrders() {
+        List<Order> orders = orderRepository.getAll();
+        return Response.ok(orders).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getOrderById(@PathParam("id") Long id) {
         Order order = orderRepository.findById(id);
-        if (order != null) {
-            return Response.ok(order).build();
+        if (order == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(order).build();
+    }
+
+    @GET
+    @Path("/customer/{customerId}")
+    public Response getOrdersByCustomerId(@PathParam("customerId") Long customerId) {
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        return Response.ok(orders).build();
+    }
+
+    @GET
+    @Path("/restaurant/{restaurantId}")
+    public Response getOrdersByRestaurantId(@PathParam("restaurantId") Long restaurantId) {
+        List<Order> orders = orderRepository.findByRestaurantId(restaurantId);
+        return Response.ok(orders).build();
+    }
+
+    @GET
+    @Path("/status/{status}")
+    public Response getOrdersByStatus(@PathParam("status") String status) {
+        List<Order> orders = orderRepository.findByStatus(status);
+        return Response.ok(orders).build();
     }
 
     @POST
     @Transactional
     public Response createOrder(Order order) {
-        orderRepository.persist(order);
+        orderRepository.save(order);
         return Response.status(Response.Status.CREATED).entity(order).build();
     }
 
@@ -46,33 +66,26 @@ public class OrderResource {
     @Path("/{id}")
     @Transactional
     public Response updateOrder(@PathParam("id") Long id, Order order) {
-        Order entity = orderRepository.findById(id);
-        if (entity == null) {
+        Order existingOrder = orderRepository.findById(id);
+        if (existingOrder == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        entity.setDeliveryAddress(order.getDeliveryAddress());
-        entity.setOrderDate(order.getOrderDate());
-        entity.setStatus(order.getStatus());
-        entity.setTotalPrice(order.getTotalPrice());
-
-        return Response.ok(entity).build();
+        order.setId(id);
+        Order updated = orderRepository.update(order);
+        return Response.ok(updated).build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
     public Response deleteOrder(@PathParam("id") Long id) {
-        boolean deleted = orderRepository.deleteById(id);
-        if (deleted) {
-            return Response.noContent().build();
+        Order order = orderRepository.findById(id);
+        if (order == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+
+        orderRepository.deleteById(id);
+        return Response.noContent().build();
     }
-
-
-
-
-
-
 }

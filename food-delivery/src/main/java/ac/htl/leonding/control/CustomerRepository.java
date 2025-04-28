@@ -1,22 +1,23 @@
 package ac.htl.leonding.control;
 
-
-
 import ac.htl.leonding.entities.Customer;
 import ac.htl.leonding.entities.Order;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
 @ApplicationScoped
-@Produces(MediaType.APPLICATION_JSON)
-public class CustomerRepository implements PanacheRepository<Customer> {
+public class CustomerRepository {
+
+    @Inject
+    EntityManager em;
 
     public List<Customer> listAll() {
-        return listAll();
+        return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
     }
 
     public List<Order> findAllOrders(Long customerId) {
@@ -25,8 +26,29 @@ public class CustomerRepository implements PanacheRepository<Customer> {
     }
 
     public Customer findById(Long id) {
-        return find("id", id).firstResult();
+        return em.find(Customer.class, id);
     }
 
+    @Transactional
+    public void persist(Customer customer) {
+        em.persist(customer);
+    }
 
+    @Transactional
+    public Customer update(Customer customer) {
+        return em.merge(customer);
+    }
+
+    @Transactional
+    public void delete(Customer customer) {
+        em.remove(em.contains(customer) ? customer : em.merge(customer));
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        Customer entity = findById(id);
+        if (entity != null) {
+            em.remove(entity);
+        }
+    }
 }
