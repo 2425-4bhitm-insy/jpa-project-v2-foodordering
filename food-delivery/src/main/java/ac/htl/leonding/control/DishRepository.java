@@ -1,6 +1,7 @@
 package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Dish;
+import ac.htl.leonding.entities.dto.DishDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -29,7 +30,7 @@ public class DishRepository {
     }
 
     public List<Dish> findAvailableByMenuId(Long menuId) {
-        return em.createQuery("SELECT d FROM Dish d WHERE d.menu.id = :menuId AND d.isavailable = true", Dish.class)
+        return em.createQuery("SELECT d FROM Dish d WHERE d.menu.id = :menuId", Dish.class)
                 .setParameter("menuId", menuId)
                 .getResultList();
     }
@@ -55,5 +56,11 @@ public class DishRepository {
         if (entity != null) {
             em.remove(entity);
         }
+    }
+
+    public List<DishDTO> entityToDTO(List<Dish> dishes) {
+        return dishes.stream()
+                .map(dish -> new DishDTO(dish.getId(), dish.getName(), dish.getPrice(), dish.getCategory(), true, dish.getMenu().getId()))
+                .toList();
     }
 }

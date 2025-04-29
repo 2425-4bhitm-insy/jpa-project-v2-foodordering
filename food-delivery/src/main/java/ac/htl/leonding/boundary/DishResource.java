@@ -2,6 +2,7 @@ package ac.htl.leonding.boundary;
 
 import ac.htl.leonding.control.DishRepository;
 import ac.htl.leonding.entities.Dish;
+import ac.htl.leonding.entities.dto.DishDTO;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -21,7 +22,8 @@ public class DishResource {
     @GET
     public Response getAllDishes() {
         List<Dish> dishes = dishRepository.listAll();
-        return Response.ok(dishes).build();
+        List<DishDTO> dishDTOS = dishRepository.entityToDTO(dishes);
+        return Response.ok(dishDTOS).build();
     }
 
     @GET
@@ -38,14 +40,16 @@ public class DishResource {
     @Path("/category/{category}")
     public Response getDishesByCategory(@PathParam("category") String category) {
         List<Dish> dishes = dishRepository.findByCategory(category);
-        return Response.ok(dishes).build();
+        List<DishDTO> dishDTOS = dishRepository.entityToDTO(dishes);
+        return Response.ok(dishDTOS).build();
     }
 
     @GET
     @Path("/menu/{menuId}/available")
     public Response getAvailableDishesByMenuId(@PathParam("menuId") Long menuId) {
         List<Dish> dishes = dishRepository.findAvailableByMenuId(menuId);
-        return Response.ok(dishes).build();
+        List<DishDTO> dishDTOS = dishRepository.entityToDTO(dishes);
+        return Response.ok(dishDTOS).build();
     }
 
     @POST

@@ -49,3 +49,121 @@ Accept: application/json
 ### Delete a customer
 DELETE http://localhost:8080/customers/1
 Accept: application/json
+
+###
+
+### Restaurants with rating above 3
+GET http://localhost:8080/restaurants/rating-above/3
+Accept: application/json
+
+###
+
+### Restaurants with average rating above 4
+GET http://localhost:8080/restaurants/high-rated
+Accept: application/json
+
+###
+
+### Dishes by category
+GET http://localhost:8080/dishes/category/MAIN
+Accept: application/json
+
+###
+
+### Pending orders
+GET http://localhost:8080/orders/status/PENDING
+Accept: application/json
+
+###
+
+### Most popular dishes per restaurant
+GET http://localhost:8080/order-items/popular-dishes
+Accept: application/json
+
+###
+
+### Get all order items
+GET http://localhost:8080/order-items
+Accept: application/json
+
+###
+
+### Get order items by order ID
+GET http://localhost:8080/order-items/order/1
+Accept: application/json
+
+###
+
+### Create new order item
+POST http://localhost:8080/order-items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "order": {
+    "id": 1
+  },
+  "dish": {
+    "id": 1
+  },
+  "quantity": 2
+}
+
+###
+
+### Update order item
+PUT http://localhost:8080/order-items/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "order": {
+    "id": 1
+  },
+  "dish": {
+    "id": 2
+  },
+  "quantity": 3
+}
+
+###
+
+### Delete order item
+DELETE http://localhost:8080/order-items/1
+Accept: application/json
+
+###
+
+### Get deliveries by status
+GET http://localhost:8080/deliveries/status/Pending
+Accept: application/json
+
+###
+
+### Get all reviews
+GET http://localhost:8080/reviews
+Accept: application/json
+
+###
+
+### Get average rating for restaurant
+GET http://localhost:8080/reviews/restaurant/1/average
+Accept: application/json
+
+###
+
+### Get all dishes
+GET http://localhost:8080/dishes
+Accept: application/json
+
+###
+
+### Get available dishes by menu ID
+GET http://localhost:8080/dishes/menu/1/available
+Accept: application/json
+
+###
+
+### Get menu by restaurant ID
+GET http://localhost:8080/menus/restaurant/1
+Accept: application/json

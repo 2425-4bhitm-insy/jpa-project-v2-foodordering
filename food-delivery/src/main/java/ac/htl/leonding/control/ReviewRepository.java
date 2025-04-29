@@ -35,7 +35,9 @@ public class ReviewRepository {
     }
 
     public Double getAverageRatingForRestaurant(Long restaurantId) {
-        return em.createQuery("SELECT AVG(r.rating) FROM Review r WHERE r.restaurant.id = :restaurantId", Double.class)
+        return em.createQuery(
+                        "SELECT AVG(CAST(r.rating AS double)) FROM Review r WHERE r.restaurant.id = :restaurantId",
+                        Double.class)
                 .setParameter("restaurantId", restaurantId)
                 .getSingleResult();
     }

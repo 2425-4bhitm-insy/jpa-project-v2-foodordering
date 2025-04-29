@@ -1,6 +1,7 @@
 package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Delivery;
+import ac.htl.leonding.entities.dto.DeliveryDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -69,5 +70,18 @@ public class DeliveryRepository {
     @Transactional
     public void delete(Delivery delivery) {
         em.remove(em.contains(delivery) ? delivery : em.merge(delivery));
+    }
+
+    public List<DeliveryDTO> entityToDTO(List<Delivery> deliveries) {
+        return deliveries.stream()
+                .map(
+                        delivery -> new DeliveryDTO(
+                                delivery.getId(),
+                                delivery.getEstimatedTime(),
+                                delivery.getStatus(),
+                                delivery.getOrder().getId()
+                        )
+                )
+                .toList();
     }
 }

@@ -2,6 +2,7 @@ package ac.htl.leonding.boundary;
 
 import ac.htl.leonding.control.DeliveryRepository;
 import ac.htl.leonding.entities.Delivery;
+import ac.htl.leonding.entities.dto.DeliveryDTO;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -55,7 +56,8 @@ public class DeliveryResource {
     @Path("/status/{status}")
     public Response getDeliveriesByStatus(@PathParam("status") String status) {
         List<Delivery> deliveries = deliveryRepository.findByStatus(status);
-        return Response.ok(deliveries).build();
+        List<DeliveryDTO> deliveryDTOS = deliveryRepository.entityToDTO(deliveries);
+        return Response.ok(deliveryDTOS).build();
     }
 
     @POST
