@@ -20,6 +20,8 @@ public class Menu {
     @Column(name = "name")
     private String name;
 
+    @OneToOne
+    private Restaurant restaurant;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Dish> dishes = new ArrayList<>();
