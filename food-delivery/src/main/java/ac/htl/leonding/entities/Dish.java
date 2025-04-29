@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Dish {
 
     @Id
-    @SequenceGenerator(name = "dishSequence", sequenceName = "dish_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "dishSequence", sequenceName = "dish_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dishSequence")
     private Long id;
 

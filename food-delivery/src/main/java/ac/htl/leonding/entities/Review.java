@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Review {
 
     @Id
-    @SequenceGenerator(name = "reviewSequence", sequenceName = "review_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "reviewSequence", sequenceName = "review_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewSequence")
     private Long id;
 

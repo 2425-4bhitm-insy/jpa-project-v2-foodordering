@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Payment {
 
     @Id
-    @SequenceGenerator(name = "paymentSequence", sequenceName = "payment_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "paymentSequence", sequenceName = "payment_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paymentSequence")
     private Long id;
 

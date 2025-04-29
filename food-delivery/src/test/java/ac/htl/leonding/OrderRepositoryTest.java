@@ -161,7 +161,7 @@ public class OrderRepositoryTest {
     }
 
     @Transactional
-    private Customer createTestCustomer() {
+    public Customer createTestCustomer() {
         Customer customer = new Customer();
         customer.setFirstName("Order");
         customer.setLastName("Tester");
@@ -173,7 +173,7 @@ public class OrderRepositoryTest {
     }
 
     @Transactional
-    private Restaurant createTestRestaurant() {
+    public Restaurant createTestRestaurant() {
         Restaurant restaurant = new Restaurant();
         restaurant.setName("Order Test Restaurant");
         restaurant.setAddress("789 Order Ave");
@@ -185,7 +185,7 @@ public class OrderRepositoryTest {
     }
 
     @Transactional
-    private void cleanupTestData(Customer customer, Restaurant restaurant) {
+    public void cleanupTestData(Customer customer, Restaurant restaurant) {
         if (customer != null && customer.getId() != null) {
             customerRepository.delete(customer);
         }

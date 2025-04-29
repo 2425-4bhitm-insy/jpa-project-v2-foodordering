@@ -29,7 +29,7 @@ import jakarta.validation.constraints.Positive;
 public class Order {
 
     @Id
-    @SequenceGenerator(name = "orderSequence", sequenceName = "order_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "orderSequence", sequenceName = "order_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSequence")
     private Long id;
 

@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Restaurant {
 
     @Id
-    @SequenceGenerator(name = "restaurantSequence", sequenceName = "restaurant_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "restaurantSequence", sequenceName = "restaurant_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurantSequence")
     private Long id;
 

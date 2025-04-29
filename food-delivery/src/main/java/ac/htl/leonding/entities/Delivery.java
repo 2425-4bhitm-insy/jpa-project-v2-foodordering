@@ -24,7 +24,7 @@ import jakarta.validation.constraints.NotNull;
 public class Delivery {
 
     @Id
-    @SequenceGenerator(name = "deliverySequence", sequenceName = "delivery_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "deliverySequence", sequenceName = "delivery_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliverySequence")
     private Long id;
 

@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Menu {
 
     @Id
-    @SequenceGenerator(name = "menuSequence", sequenceName = "menu_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "menuSequence", sequenceName = "menu_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuSequence")
     private Long id;
 

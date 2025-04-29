@@ -23,7 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
     private Long id;
 
