@@ -1,7 +1,11 @@
 package ac.htl.leonding.boundary;
 
+import ac.htl.leonding.control.CustomerRepository;
+import ac.htl.leonding.control.DeliveryRepository;
 import ac.htl.leonding.control.OrderRepository;
+import ac.htl.leonding.control.RestaurantRepository;
 import ac.htl.leonding.entities.Order;
+import ac.htl.leonding.entities.dto.OrderDTO;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -18,16 +22,25 @@ public class OrderResource {
     @Inject
     OrderRepository orderRepository;
 
+    @Inject
+    CustomerRepository customerRepository;
+
+    @Inject
+    RestaurantRepository restaurantRepository;
+
+    @Inject
+    DeliveryRepository deliveryRepository;
+
     @GET
     public Response getAllOrders() {
-        List<Order> orders = orderRepository.getAll();
+        List<OrderDTO> orders = orderRepository.entityToDTO(orderRepository.getAll());
         return Response.ok(orders).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getOrderById(@PathParam("id") Long id) {
-        Order order = orderRepository.findById(id);
+        OrderDTO order = orderRepository.entityToDTO(orderRepository.findById(id));
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -37,42 +50,51 @@ public class OrderResource {
     @GET
     @Path("/customer/{customerId}")
     public Response getOrdersByCustomerId(@PathParam("customerId") Long customerId) {
-        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        List<OrderDTO> orders = orderRepository.entityToDTO(orderRepository.findByCustomerId(customerId));
         return Response.ok(orders).build();
     }
 
     @GET
     @Path("/restaurant/{restaurantId}")
     public Response getOrdersByRestaurantId(@PathParam("restaurantId") Long restaurantId) {
-        List<Order> orders = orderRepository.findByRestaurantId(restaurantId);
+        List<OrderDTO> orders = orderRepository.entityToDTO(orderRepository.findByRestaurantId(restaurantId));
         return Response.ok(orders).build();
     }
 
     @GET
     @Path("/status/{status}")
     public Response getOrdersByStatus(@PathParam("status") String status) {
-        List<Order> orders = orderRepository.findByStatus(status);
+        List<OrderDTO> orders = orderRepository.entityToDTO(orderRepository.findByStatus(status));
         return Response.ok(orders).build();
     }
 
     @POST
     @Transactional
-    public Response createOrder(Order order) {
+    public Response createOrder(OrderDTO orderDto) {
+
+        Order order = orderRepository.dtoToEntity(orderDto);
         orderRepository.save(order);
-        return Response.status(Response.Status.CREATED).entity(order).build();
+        return Response.status(Response.Status.CREATED).entity(orderDto).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response updateOrder(@PathParam("id") Long id, Order order) {
+    public Response updateOrder(@PathParam("id") Long id, OrderDTO orderDTO) {
         Order existingOrder = orderRepository.findById(id);
         if (existingOrder == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        order.setId(id);
-        Order updated = orderRepository.update(order);
+        existingOrder.setOrderDate(orderDTO.orderDate());
+        existingOrder.setDeliveryAddress(orderDTO.deliveryAddress());
+        existingOrder.setTotalPrice(orderDTO.totalPrice());
+        existingOrder.setStatus(orderDTO.status());
+        existingOrder.setCustomer(customerRepository.findById(orderDTO.customerId()));
+        existingOrder.setRestaurant(restaurantRepository.findById(orderDTO.restaurantId()));
+
+        Order updated = orderRepository.update(existingOrder);
+
         return Response.ok(updated).build();
     }
 
@@ -80,12 +102,16 @@ public class OrderResource {
     @Path("/{id}")
     @Transactional
     public Response deleteOrder(@PathParam("id") Long id) {
-        Order order = orderRepository.findById(id);
+        OrderDTO order = orderRepository.entityToDTO(orderRepository.findById(id));
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        deliveryRepository.findByDeliveryPersonId(order.customerId());
+
         orderRepository.deleteById(id);
         return Response.noContent().build();
     }
+
+
 }

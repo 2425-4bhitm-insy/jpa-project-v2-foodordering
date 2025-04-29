@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 
 public record DeliveryDTO(
         Long id,
-        Long orderId,
-        Long deliveryPersonId,
+        LocalDateTime estimatedTime,
         String status,
-        LocalDateTime estimatedDeliveryTime,
-        LocalDateTime actualDeliveryTime
+        Long orderId
 ) {}

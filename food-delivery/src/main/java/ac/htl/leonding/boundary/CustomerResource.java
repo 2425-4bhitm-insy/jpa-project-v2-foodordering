@@ -1,7 +1,6 @@
 package ac.htl.leonding.boundary;
 
 import ac.htl.leonding.control.CustomerRepository;
-
 import ac.htl.leonding.control.OrderRepository;
 import ac.htl.leonding.entities.Customer;
 import ac.htl.leonding.entities.Order;
@@ -28,44 +27,33 @@ public class CustomerResource {
 
     @GET
     public Response getAllCustomers() {
-        List<Customer> customers = customerRepository.listAll();
-        List<CustomerDTO> customerDTOs = customerRepository.entityToDTO(customers);
-        return Response.ok(customerDTOs).build();
+        List<CustomerDTO> customers = customerRepository.entityToDTO(customerRepository.getAll());
+        return Response.ok(customers).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getCustomerById(@PathParam("id") Long id) {
-        Customer customer = customerRepository.findById(id);
+        CustomerDTO customer = customerRepository.entityToDTO(customerRepository.findById(id));
         if (customer == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        CustomerDTO customerDTO = customerRepository.entityToDTO(customer);
-        return Response.ok(customerDTO).build();
+        return Response.ok(customer).build();
     }
 
     @GET
     @Path("/{id}/orders")
     public Response getCustomerOrders(@PathParam("id") Long id) {
-        List<Order> orders = customerRepository.findAllOrders(id);
-        // Hier benötigen wir die OrderDTO-Methode, entweder aus dem OrderRepository oder hier inline
-        List<OrderDTO> orderDTOs = orderRepository.entityToDTO(orders);
-        return Response.ok(orderDTOs).build();
-    }
-
-    @GET
-    @Path("/with-orders")
-    public Response getAllCustomersWithOrderInfo() {
-        List<Object[]> customersWithOrders = customerRepository.findAllCustomersWithOrderInfo();
-        return Response.ok(customersWithOrders).build();
+        List<OrderDTO> orders = orderRepository.entityToDTO(orderRepository.findByCustomerId(id));
+        return Response.ok(orders).build();
     }
 
     @POST
     @Transactional
-    public Response createCustomer(CustomerDTO customerDTO) {
-        Customer customer = customerRepository.dtoToEntity(customerDTO);
+    public Response createCustomer(CustomerDTO customerDto) {
+        Customer customer = customerRepository.dtoToEntity(customerDto);
         customerRepository.persist(customer);
-        return Response.status(Response.Status.CREATED).entity(customerRepository.entityToDTO(customer)).build();
+        return Response.status(Response.Status.CREATED).entity(customerDto).build();
     }
 
     @PUT
@@ -73,13 +61,17 @@ public class CustomerResource {
     @Transactional
     public Response updateCustomer(@PathParam("id") Long id, CustomerDTO customerDTO) {
         Customer existingCustomer = customerRepository.findById(id);
+
         if (existingCustomer == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        Customer customer = customerRepository.dtoToEntity(customerDTO);
-        customer.setId(id);
-        Customer updated = customerRepository.update(customer);
+        existingCustomer.setFirstName(customerDTO.firstName());
+        existingCustomer.setLastName(customerDTO.lastName());
+        existingCustomer.setEmail(customerDTO.email());
+        existingCustomer.setPhoneNumber(customerDTO.phoneNumber());
+        Customer updated = customerRepository.update(existingCustomer);
+
         return Response.ok(customerRepository.entityToDTO(updated)).build();
     }
 
@@ -87,7 +79,7 @@ public class CustomerResource {
     @Path("/{id}")
     @Transactional
     public Response deleteCustomer(@PathParam("id") Long id) {
-        Customer customer = customerRepository.findById(id);
+        CustomerDTO customer = customerRepository.entityToDTO(customerRepository.findById(id));
         if (customer == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

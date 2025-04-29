@@ -1,8 +1,9 @@
 package ac.htl.leonding.entities.dto;
 
+import java.util.List;
+
 public record MenuDTO(
         Long id,
-        Long restaurantId,
         String name,
-        String description
+        List<Long> dishIds
 ) {}

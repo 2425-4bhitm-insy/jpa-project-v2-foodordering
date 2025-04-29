@@ -2,6 +2,7 @@ package ac.htl.leonding.control;
 
 import ac.htl.leonding.entities.Customer;
 import ac.htl.leonding.entities.Order;
+import ac.htl.leonding.entities.Review;
 import ac.htl.leonding.entities.dto.CustomerDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -17,34 +18,23 @@ public class CustomerRepository {
     @Inject
     EntityManager em;
 
-    public List<Customer> listAll() {
-        return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
+    public List<Customer> getAll() {
+        List<Customer> customers = em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
+        return customers;
     }
 
-    public List<Order> findAllOrders(Long customerId) {
-        Customer customer = findById(customerId);
-        return customer != null ? customer.getOrders() : List.of();
-    }
+
 
     public Customer findById(Long id) {
         return em.find(Customer.class, id);
     }
 
-    public List<Object[]> findAllCustomersWithOrderInfo() {
-        return em.createQuery("SELECT c, COUNT(o), SUM(o.totalPrice) " +
-                        "FROM Customer c LEFT JOIN c.orders o " +
-                        "GROUP BY c.id")
-                .getResultList();
-    }
-
     public CustomerDTO entityToDTO(Customer customer) {
         return new CustomerDTO(
-                customer.getId(),
                 customer.getFirstName(),
-                customer.getFirstName(),
+                customer.getLastName(),
                 customer.getEmail(),
-                customer.getPhoneNumber(),
-                customer.getAddress()
+                customer.getPhoneNumber()
         );
     }
 
@@ -55,13 +45,11 @@ public class CustomerRepository {
     }
 
     public Customer dtoToEntity(CustomerDTO dto) {
-        Customer customer = new Customer();
-        customer.setId(dto.id());
+        Customer  customer = new Customer();
         customer.setFirstName(dto.firstName());
         customer.setLastName(dto.lastName());
         customer.setEmail(dto.email());
-        customer.setPhoneNumber(dto.phone());
-        customer.setAddress(dto.address());
+        customer.setPhoneNumber(dto.phoneNumber());
         return customer;
     }
 

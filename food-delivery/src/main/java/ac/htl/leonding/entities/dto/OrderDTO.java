@@ -1,12 +1,14 @@
 package ac.htl.leonding.entities.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record OrderDTO(
         Long id,
-        Long customerId,
-        Long restaurantId,
-        String status,
+        LocalDateTime orderDate,
+        String deliveryAddress,
         Double totalPrice,
-        LocalDateTime orderDate
+        String status,
+        Long customerId,
+        Long restaurantId
 ) {}

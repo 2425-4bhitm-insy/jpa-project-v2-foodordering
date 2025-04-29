@@ -1,7 +1,9 @@
 package ac.htl.leonding.control;
 
-import ac.htl.leonding.entities.Order;
+import ac.htl.leonding.entities.*;
+import ac.htl.leonding.entities.dto.CustomerDTO;
 import ac.htl.leonding.entities.dto.OrderDTO;
+import ac.htl.leonding.entities.dto.OrderItemDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -36,9 +38,45 @@ public class OrderRepository {
     }
 
     public List<Order> findByStatus(String status) {
+
+
         return em.createQuery("SELECT o FROM Order o WHERE o.status = :status", Order.class)
                 .setParameter("status", status)
                 .getResultList();
+    }
+
+    public OrderDTO entityToDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO(order.getId(),
+                order.getOrderDate(),
+                order.getDeliveryAddress(),
+                order.getTotalPrice(),
+                order.getStatus(),
+                order.getCustomer().getId(),
+                order.getRestaurant().getId());
+
+        return orderDTO;
+    }
+
+    public List<OrderDTO> entityToDTO(List<Order> orders) {
+        return orders.stream()
+                .map(this::entityToDTO)
+                .toList();
+    }
+
+    public Order dtoToEntity(OrderDTO orderDTO) {
+
+        Order order = new Order();
+        order.setId(orderDTO.id());
+        order.setOrderDate(orderDTO.orderDate());
+        order.setDeliveryAddress(orderDTO.deliveryAddress());
+        order.setTotalPrice(orderDTO.totalPrice());
+        order.setStatus(orderDTO.status());
+        order.setRestaurant(em.find(Restaurant.class, orderDTO.restaurantId()));
+
+        Customer customer = em.find(Customer.class, orderDTO.customerId());
+        order.setCustomer(customer);
+
+        return order;
     }
 
     @Transactional
@@ -64,32 +102,5 @@ public class OrderRepository {
         }
     }
 
-    public OrderDTO entityToDTO(Order order) {
-        return new OrderDTO(
-                order.getId(),
-                order.getCustomer() != null ? order.getCustomer().getId() : null,
-                order.getRestaurant() != null ? order.getRestaurant().getId() : null,
-                order.getStatus(),
-                order.getTotalPrice(),
-                order.getOrderDate()
 
-        );
-    }
-
-    public List<OrderDTO> entityToDTO(List<Order> orders) {
-        return orders.stream()
-                .map(this::entityToDTO)
-                .toList();
-    }
-
-    public Order dtoToEntity(OrderDTO dto) {
-        Order order = new Order();
-        order.setId(dto.id());
-        // Customer und Restaurant müssen separat gesetzt werden
-        order.setStatus(dto.status());
-        order.setTotalPrice(dto.totalPrice());
-        order.setOrderDate(dto.orderDate());
-
-        return order;
-    }
 }

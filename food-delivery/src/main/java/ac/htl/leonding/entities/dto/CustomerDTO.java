@@ -1,10 +1,12 @@
 package ac.htl.leonding.entities.dto;
 
+import java.util.List;
+
 public record CustomerDTO(
-        Long id,
         String firstName,
         String lastName,
         String email,
-        String phone,
-        String address
-) {}
+        String phoneNumber
+) {
+
+}

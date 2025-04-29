@@ -1,13 +1,11 @@
 package ac.htl.leonding.entities;
 
 import ac.htl.leonding.entities.dto.OrderDTO;
+import ac.htl.leonding.entities.dto.OrderItemDTO;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.util.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -62,16 +60,10 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Payment> payments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Dish> dishes = new ArrayList<>();
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
 
     public Order() {
     }
@@ -141,6 +133,13 @@ public class Order {
     }
 
 
+
+
+
+
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -172,5 +171,20 @@ public class Order {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public List<Dish> getDish() {
+        return dishes;
+    }
+
+    public void setDish(List<Dish> dish) {
+        this.dishes = dish;
+    }
+
+    public List<OrderItemDTO> getOrderItems(Long id) {
+        return dishes.stream()
+                .filter(dish -> dish.getId().equals(id))
+                .map(dish -> new OrderItemDTO(dish.getId(), dish.getName(), dish.getPrice()))
+                .toList();
     }
 }

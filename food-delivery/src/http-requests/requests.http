@@ -1,407 +1,51 @@
-### Umgebungsvariablen
-@baseUrl = http://localhost:8080
-@contentType = application/json
+### Get all customers
+GET http://localhost:8080/customers
+Accept: application/json
 
 ###
-### CUSTOMER API TESTS
+
+### Get a customer by ID
+GET http://localhost:8080/customers/1
+Accept: application/json
+
 ###
 
-### Alle Kunden abrufen
-GET {{baseUrl}}/customers
-Accept: {{contentType}}
+### Get orders for a customer
+GET http://localhost:8080/customers/1/orders
+Accept: application/json
 
-### Einen spezifischen Kunden abrufen
-GET {{baseUrl}}/customers/1
-Accept: {{contentType}}
+###
 
-### Alle Bestellungen eines Kunden abrufen
-GET {{baseUrl}}/customers/1/orders
-Accept: {{contentType}}
-
-### Neuen Kunden erstellen
-POST {{baseUrl}}/customers
-Content-Type: {{contentType}}
+### Create a new customer
+POST http://localhost:8080/customers
+Content-Type: application/json
+Accept: application/json
 
 {
-  "name": "Max Mustermann",
+  "firstName": "Max",
+  "lastName": "Mustermann",
   "email": "max.mustermann@example.com",
-  "address": "Musterstraße 123, 1234 Musterstadt",
-  "phoneNumber": "+43 123 456789"
+  "phoneNumber": "+43123456789",
+  "address": "Musterstraße 1, 1010 Wien"
 }
-
-### Kunden aktualisieren
-PUT {{baseUrl}}/customers/1
-Content-Type: {{contentType}}
-
-{
-  "name": "Maximilian Mustermann",
-  "email": "maximilian.mustermann@example.com",
-  "address": "Musterstraße 123, 1234 Musterstadt",
-  "phoneNumber": "+43 123 456789"
-}
-
-### Kunden löschen
-DELETE {{baseUrl}}/customers/3
-Accept: {{contentType}}
 
 ###
-### DELIVERY API TESTS
+
+### Update an existing customer
+PUT http://localhost:8080/customers/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Maximilian",
+  "lastName": "Muster",
+  "email": "maximilian.muster@example.com",
+  "phoneNumber": "+43123456780",
+  "address": "Musterstraße 2, 1010 Wien"
+}
+
 ###
 
-### Alle Lieferungen abrufen
-GET {{baseUrl}}/deliveries
-Accept: {{contentType}}
-
-### Eine spezifische Lieferung abrufen
-GET {{baseUrl}}/deliveries/1
-Accept: {{contentType}}
-
-### Lieferung nach Bestellungs-ID abrufen
-GET {{baseUrl}}/deliveries/order/1
-Accept: {{contentType}}
-
-### Alle Lieferungen eines Lieferanten abrufen
-GET {{baseUrl}}/deliveries/person/1
-Accept: {{contentType}}
-
-### Lieferungen nach Status abrufen
-GET {{baseUrl}}/deliveries/status/PENDING
-Accept: {{contentType}}
-
-### Neue Lieferung erstellen
-POST {{baseUrl}}/deliveries
-Content-Type: {{contentType}}
-
-{
-  "order": {
-    "id": 1
-  },
-  "deliveryperson": {
-    "id": 1
-  },
-  "status": "PENDING",
-  "estimatedDeliveryTime": "2025-04-28T14:30:00Z",
-  "actualDeliveryTime": null
-}
-
-### Lieferung aktualisieren
-PUT {{baseUrl}}/deliveries/1
-Content-Type: {{contentType}}
-
-{
-  "order": {
-    "id": 1
-  },
-  "deliveryperson": {
-    "id": 1
-  },
-  "status": "DELIVERED",
-  "estimatedDeliveryTime": "2025-04-28T14:30:00Z",
-  "actualDeliveryTime": "2025-04-28T14:25:00Z"
-}
-
-### Lieferung löschen
-DELETE {{baseUrl}}/deliveries/3
-Accept: {{contentType}}
-
-###
-### DISH API TESTS
-###
-
-### Alle Gerichte abrufen
-GET {{baseUrl}}/dishes
-Accept: {{contentType}}
-
-### Ein spezifisches Gericht abrufen
-GET {{baseUrl}}/dishes/1
-Accept: {{contentType}}
-
-### Gerichte nach Kategorie abrufen
-GET {{baseUrl}}/dishes/category/MAIN
-Accept: {{contentType}}
-
-### Verfügbare Gerichte einer Speisekarte abrufen
-GET {{baseUrl}}/dishes/menu/1/available
-Accept: {{contentType}}
-
-### Neues Gericht erstellen
-POST {{baseUrl}}/dishes
-Content-Type: {{contentType}}
-
-{
-  "name": "Wiener Schnitzel",
-  "description": "Traditionelles österreichisches Gericht mit Kartoffelsalat",
-  "price": 14.90,
-  "category": "MAIN",
-  "isavailable": true,
-  "menu": {
-    "id": 1
-  }
-}
-
-### Gericht aktualisieren
-PUT {{baseUrl}}/dishes/1
-Content-Type: {{contentType}}
-
-{
-  "name": "Wiener Schnitzel",
-  "description": "Traditionelles österreichisches Gericht mit Kartoffelsalat und Preiselbeeren",
-  "price": 15.90,
-  "category": "MAIN",
-  "isavailable": true,
-  "menu": {
-    "id": 1
-  }
-}
-
-### Gericht löschen
-DELETE {{baseUrl}}/dishes/3
-Accept: {{contentType}}
-
-###
-### MENU API TESTS
-###
-
-### Alle Speisekarten abrufen
-GET {{baseUrl}}/menus
-Accept: {{contentType}}
-
-### Eine spezifische Speisekarte abrufen
-GET {{baseUrl}}/menus/1
-Accept: {{contentType}}
-
-### Speisekarte eines Restaurants abrufen
-GET {{baseUrl}}/menus/restaurant/1
-Accept: {{contentType}}
-
-### Neue Speisekarte erstellen
-POST {{baseUrl}}/menus
-Content-Type: {{contentType}}
-
-{
-  "name": "Frühlingskarte 2025",
-  "description": "Unsere saisonale Speisekarte mit frischen Frühlingsgerichten",
-  "restaurant": {
-    "id": 1
-  }
-}
-
-### Speisekarte aktualisieren
-PUT {{baseUrl}}/menus/1
-Content-Type: {{contentType}}
-
-{
-  "name": "Sommerkarte 2025",
-  "description": "Unsere saisonale Speisekarte mit frischen Sommergerichten",
-  "restaurant": {
-    "id": 1
-  }
-}
-
-### Speisekarte löschen
-DELETE {{baseUrl}}/menus/3
-Accept: {{contentType}}
-
-###
-### ORDER API TESTS
-###
-
-### Alle Bestellungen abrufen
-GET {{baseUrl}}/orders
-Accept: {{contentType}}
-
-### Eine spezifische Bestellung abrufen
-GET {{baseUrl}}/orders/1
-Accept: {{contentType}}
-
-### Bestellungen eines Kunden abrufen
-GET {{baseUrl}}/orders/customer/1
-Accept: {{contentType}}
-
-### Bestellungen eines Restaurants abrufen
-GET {{baseUrl}}/orders/restaurant/1
-Accept: {{contentType}}
-
-### Bestellungen nach Status abrufen
-GET {{baseUrl}}/orders/status/COMPLETED
-Accept: {{contentType}}
-
-### Neue Bestellung erstellen
-POST {{baseUrl}}/orders
-Content-Type: {{contentType}}
-
-{
-  "customer": {
-    "id": 1
-  },
-  "restaurant": {
-    "id": 1
-  },
-  "orderDate": "2025-04-28T13:00:00Z",
-  "status": "PENDING",
-  "totalAmount": 32.80,
-  "orderItems": [
-    {
-      "dish": {
-        "id": 1
-      },
-      "quantity": 2,
-      "price": 15.90
-    },
-    {
-      "dish": {
-        "id": 2
-      },
-      "quantity": 1,
-      "price": 6.50
-    }
-  ]
-}
-
-### Bestellung aktualisieren
-PUT {{baseUrl}}/orders/1
-Content-Type: {{contentType}}
-
-{
-  "customer": {
-    "id": 1
-  },
-  "restaurant": {
-    "id": 1
-  },
-  "orderDate": "2025-04-28T13:00:00Z",
-  "status": "COMPLETED",
-  "totalAmount": 32.80,
-  "orderItems": [
-    {
-      "id": 1,
-      "dish": {
-        "id": 1
-      },
-      "quantity": 2,
-      "price": 15.90
-    },
-    {
-      "id": 2,
-      "dish": {
-        "id": 2
-      },
-      "quantity": 1,
-      "price": 6.50
-    }
-  ]
-}
-
-### Bestellung löschen
-DELETE {{baseUrl}}/orders/3
-Accept: {{contentType}}
-
-###
-### RESTAURANT API TESTS
-###
-
-### Alle Restaurants abrufen
-GET {{baseUrl}}/restaurants
-Accept: {{contentType}}
-
-### Ein spezifisches Restaurant abrufen
-GET {{baseUrl}}/restaurants/1
-Accept: {{contentType}}
-
-### Restaurants nach Namen suchen
-GET {{baseUrl}}/restaurants/search?name=Pizza
-Accept: {{contentType}}
-
-### Restaurants nach Mindestbewertung abrufen
-GET {{baseUrl}}/restaurants/rating/4.5
-Accept: {{contentType}}
-
-### Neues Restaurant erstellen
-POST {{baseUrl}}/restaurants
-Content-Type: {{contentType}}
-
-{
-  "name": "Ristorante Italiano",
-  "address": "Hauptstraße 42, 4040 Linz",
-  "phoneNumber": "+43 732 123456",
-  "description": "Authentische italienische Küche in Linz",
-  "openingHours": "Mo-Sa: 11:30-22:00, So: 12:00-21:00",
-  "rating": "4.7"
-}
-
-### Restaurant aktualisieren
-PUT {{baseUrl}}/restaurants/1
-Content-Type: {{contentType}}
-
-{
-  "name": "Ristorante Italiano Nuovo",
-  "address": "Hauptstraße 42, 4040 Linz",
-  "phoneNumber": "+43 732 123456",
-  "description": "Die beste authentische italienische Küche in Linz",
-  "openingHours": "Mo-Sa: 11:30-22:30, So: 12:00-21:30",
-  "rating": "4.8"
-}
-
-### Restaurant löschen
-DELETE {{baseUrl}}/restaurants/3
-Accept: {{contentType}}
-
-###
-### REVIEW API TESTS
-###
-
-### Alle Bewertungen abrufen
-GET {{baseUrl}}/reviews
-Accept: {{contentType}}
-
-### Eine spezifische Bewertung abrufen
-GET {{baseUrl}}/reviews/1
-Accept: {{contentType}}
-
-### Bewertungen eines Restaurants abrufen
-GET {{baseUrl}}/reviews/restaurant/1
-Accept: {{contentType}}
-
-### Bewertungen eines Kunden abrufen
-GET {{baseUrl}}/reviews/customer/1
-Accept: {{contentType}}
-
-### Durchschnittliche Bewertung eines Restaurants abrufen
-GET {{baseUrl}}/reviews/restaurant/1/average
-Accept: {{contentType}}
-
-### Neue Bewertung erstellen
-POST {{baseUrl}}/reviews
-Content-Type: {{contentType}}
-
-{
-  "customer": {
-    "id": 1
-  },
-  "restaurant": {
-    "id": 1
-  },
-  "rating": 5.0,
-  "comment": "Ausgezeichnetes Essen und Service!",
-  "reviewDate": "2025-04-27T18:30:00Z"
-}
-
-### Bewertung aktualisieren
-PUT {{baseUrl}}/reviews/1
-Content-Type: {{contentType}}
-
-{
-  "customer": {
-    "id": 1
-  },
-  "restaurant": {
-    "id": 1
-  },
-  "rating": 4.5,
-  "comment": "Sehr gutes Essen und Service, kleine Abzüge beim Ambiente.",
-  "reviewDate": "2025-04-27T18:30:00Z"
-}
-
-### Bewertung löschen
-DELETE {{baseUrl}}/reviews/3
-Accept: {{contentType}}
+### Delete a customer
+DELETE http://localhost:8080/customers/1
+Accept: application/json

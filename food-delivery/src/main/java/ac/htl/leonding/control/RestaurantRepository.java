@@ -1,6 +1,8 @@
 package ac.htl.leonding.control;
 
+import ac.htl.leonding.entities.Customer;
 import ac.htl.leonding.entities.Restaurant;
+import ac.htl.leonding.entities.dto.CustomerDTO;
 import ac.htl.leonding.entities.dto.RestaurantDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,6 +16,9 @@ public class RestaurantRepository {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    CustomerRepository customerRepository;
 
     public List<Restaurant> findAllRestaurants() {
         return em.createQuery("SELECT r FROM Restaurant r", Restaurant.class).getResultList();
@@ -49,16 +54,13 @@ public class RestaurantRepository {
                 .getResultList();
     }
 
+
     public RestaurantDTO entityToDTO(Restaurant restaurant) {
-        return new RestaurantDTO(
-                restaurant.getId(),
-                restaurant.getName(),
-                restaurant.getAddress(),
-                restaurant.getPhone(),
-                restaurant.getCuisine(),
-                restaurant.getRating(),
-                restaurant.getIsOpen()
-        );
+     return new RestaurantDTO(restaurant.getName(),
+             restaurant.getAddress(),
+             restaurant.getDescription(),
+             restaurant.getRating(),
+             restaurant.getRestaurantOwner().getId());
     }
 
     public List<RestaurantDTO> entityToDTO(List<Restaurant> restaurants) {
@@ -67,17 +69,14 @@ public class RestaurantRepository {
                 .toList();
     }
 
-    public Restaurant dtoToEntity(RestaurantDTO dto) {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setId(dto.id());
-        restaurant.setName(dto.name());
-        restaurant.setAddress(dto.address());
-        restaurant.setPhone(dto.phone());
-        restaurant.setCuisine(dto.cuisine());
-        restaurant.setRating(dto.rating());
-        restaurant.setIsOpen(dto.isOpen());
-        return restaurant;
-    }
+//    public Restaurant dtoToEntity(RestaurantDTO dto) {
+//        Restaurant restaurant = new Restaurant();
+//        restaurant.setName(dto.name());
+//        restaurant.setAddress(dto.address());
+//        restaurant.setDescription(dto.description());
+//        restaurant.setRating(dto.rating());
+//        restaurant.setRestaurantOwner();
+//    }
 
     @Transactional
     public void save(Restaurant restaurant) {
